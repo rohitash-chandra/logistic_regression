@@ -1,8 +1,6 @@
  
  # by R. Chandra
- #Source: https://github.com/rohitash-chandra/logisticregression_multiclass
-
-
+ #Source: https://github.com/rohitash-chandra/logistic_regression
 
 from math import exp
 import numpy as np
