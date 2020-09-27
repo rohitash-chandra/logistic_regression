@@ -23,8 +23,7 @@ class logistic_regression:
 		self.b = np.random.uniform(-0.5, 0.5, self.num_outputs) 
 		self.learn_rate = learn_rate
 		self.max_epoch = num_epocs
-		self.use_activation = SIGMOID #SIGMOID # 1 is  sigmoid , 2 is step, 3 is linear
-		#self.use_activation = SIGMOID #SIGMOID # 1 is  sigmoid , 2 is step, 3 is linear
+		self.use_activation = SIGMOID #SIGMOID # 1 is  sigmoid , 2 is step, 3 is linear 
 		self.out_delta = np.zeros(self.num_outputs)
 
 		print(self.w, ' self.w init') 
@@ -192,7 +191,7 @@ xor_data = np.asarray(xor_dataset) # convert list data to numpy
 
 
 
-num_epocs = 20
+num_epocs = 200
 learn_rate = 0.9
 num_features = 2
 
