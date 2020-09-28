@@ -4,10 +4,14 @@
 
 from math import exp
 import numpy as np
+import random
 
 SIGMOID = 1
 STEP = 2
 LINEAR = 3
+
+ 
+random.seed()
 
 class logistic_regression:
 
@@ -60,6 +64,8 @@ class logistic_regression:
 
 	def squared_error(self, prediction, actual):
 		return  np.sum(np.square(prediction - actual))/prediction.shape[0]# to cater more in one output/class
+ 
+
 
 	def test_model(self, data, tolerance):  
 
@@ -73,9 +79,14 @@ class logistic_regression:
 			actual  = self.train_data[s,self.num_features:]  
 			prediction = self.predict(input_instance) 
 			sum_sqer += self.squared_error(prediction, actual)
-			print(s, actual, prediction, sum_sqer, ' s, actual, prediction, sum_sqer')
 
-			if(np.isclose(prediction, actual, atol=tolerance).any()):
+			pred_binary = np.where(prediction > (1 - tolerance), 1, 0)
+
+			print(s, actual, prediction, pred_binary, sum_sqer, ' s, actual, prediction, sum_sqer')
+
+ 
+
+			if( np.sum(actual-pred_binary)==0):
 				class_perf =  class_perf +1  
 
 		rmse = np.sqrt(sum_sqer/num_instances)
@@ -89,15 +100,23 @@ class logistic_regression:
 
 
 
+
+
  
 	def SGD(self):   
 		
 			epoch = 0 
+			shuffle = True
+
 			while  epoch < self.max_epoch:
 				sum_sqer = 0
 				for s in range(0, self.num_train): 
-					input_instance  =  self.train_data[s,0:self.num_features]  
-					actual  = self.train_data[s,self.num_features:]  
+
+					if shuffle ==True:
+						i = random.randint(0, self.num_train-1)
+
+					input_instance  =  self.train_data[i,0:self.num_features]  
+					actual  = self.train_data[i,self.num_features:]  
 					prediction = self.predict(input_instance) 
 					sum_sqer += self.squared_error(prediction, actual)
 					self.out_delta = self.gradient( input_instance, prediction, actual)    # major difference when compared to GD
@@ -146,54 +165,61 @@ class logistic_regression:
 
 
 
- 
-dataset = [[2.7810836,2.550537003,0],
-	[1.465489372,2.362125076,0],
-	[3.396561688,4.400293529,0],
-	[1.38807019,1.850220317,0],
-	[3.06407232,3.005305973,0],
-	[7.627531214,2.759262235,1],
-	[5.332441248,2.088626775,1],
-	[6.922596716,1.77106367,1],
-	[8.675418651,-0.242068655,1],
-	[7.673756466,3.508563011,1]]
+def main(): 
+	
+	random.seed()
+	 
+
+	 
+	dataset = [[2.7810836,2.550537003,0],
+		[1.465489372,2.362125076,0],
+		[3.396561688,4.400293529,0],
+		[1.38807019,1.850220317,0],
+		[3.06407232,3.005305973,0],
+		[7.627531214,2.759262235,1],
+		[5.332441248,2.088626775,1],
+		[6.922596716,1.77106367,1],
+		[8.675418651,-0.242068655,1],
+		[7.673756466,3.508563011,1]]
 
 
-train_data = np.asarray(dataset) # convert list data to numpy
-test_data = train_data
+	train_data = np.asarray(dataset) # convert list data to numpy
+	test_data = train_data
 
- 
+	 
 
-learn_rate = 0.3
-num_features = 2
-num_epocs = 20
+	learn_rate = 0.3
+	num_features = 2
+	num_epocs = 20
 
-print(train_data)
- 
+	print(train_data)
+	 
 
-lreg = logistic_regression(num_epocs, train_data, test_data, num_features, learn_rate)
-(train_perc, test_perc, rmse_train, rmse_test) = lreg.SGD()
-(train_perc, test_perc, rmse_train, rmse_test) = lreg.GD() 
- 
+	lreg = logistic_regression(num_epocs, train_data, test_data, num_features, learn_rate)
+	(train_perc, test_perc, rmse_train, rmse_test) = lreg.SGD()
+	(train_perc, test_perc, rmse_train, rmse_test) = lreg.GD() 
+	 
 
-#-------------------------------
-#xor data
-
-
-xor_dataset= [[0,0,0],
-	[0,1,1],
-	[1,0,1],
-	[1,1,0] ]
-
-xor_data = np.asarray(xor_dataset) # convert list data to numpy
+	#-------------------------------
+	#xor data
 
 
+	xor_dataset= [[0,0,0],
+		[0,1,1],
+		[1,0,1],
+		[1,1,0] ]
 
-num_epocs = 200
-learn_rate = 0.9
-num_features = 2
+	xor_data = np.asarray(xor_dataset) # convert list data to numpy
 
-lreg = logistic_regression(num_epocs, xor_data, xor_data, num_features, learn_rate)
-(train_perc, test_perc, rmse_train, rmse_test) = lreg.SGD()
-(train_perc, test_perc, rmse_train, rmse_test) = lreg.GD() 
- 
+
+
+	num_epocs = 200
+	learn_rate = 0.9
+	num_features = 2
+
+	lreg = logistic_regression(num_epocs, xor_data, xor_data, num_features, learn_rate)
+	(train_perc, test_perc, rmse_train, rmse_test) = lreg.SGD()
+	(train_perc, test_perc, rmse_train, rmse_test) = lreg.GD() 
+
+
+if __name__ == "__main__": main()
