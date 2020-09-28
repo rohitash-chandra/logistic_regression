@@ -128,7 +128,9 @@ class logistic_regression:
 				epoch=epoch+1  
 
 			rmse_train, train_perc = self.test_model(self.train_data, 0.3) 
-			rmse_test, test_perc = self.test_model(self.test_data, 0.3)
+			rmse_test =0
+			test_perc =0
+			#rmse_test, test_perc = self.test_model(self.test_data, 0.3)
   
 			return (train_perc, test_perc, rmse_train, rmse_test) 
 				
@@ -153,7 +155,9 @@ class logistic_regression:
 				epoch=epoch+1  
 
 			rmse_train, train_perc = self.test_model(self.train_data, 0.3) 
-			rmse_test, test_perc = self.test_model(self.test_data, 0.3)
+			rmse_test =0
+			test_perc =0
+			#rmse_test, test_perc = self.test_model(self.test_data, 0.3)
   
 			return (train_perc, test_perc, rmse_train, rmse_test) 
 				
@@ -166,7 +170,7 @@ class logistic_regression:
 
 
 def main(): 
-	
+
 	random.seed()
 	 
 
@@ -213,7 +217,7 @@ def main():
 
 
 
-	num_epocs = 200
+	num_epocs = 20
 	learn_rate = 0.9
 	num_features = 2
 
