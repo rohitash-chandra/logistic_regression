@@ -86,8 +86,8 @@ class logistic_regression:
 
  
 
-			if( np.sum(actual-pred_binary)==0):
-				class_perf =  class_perf +1  
+			if( (actual==pred_binary).all()):
+				class_perf =  class_perf +1   
 
 		rmse = np.sqrt(sum_sqer/num_instances)
 
